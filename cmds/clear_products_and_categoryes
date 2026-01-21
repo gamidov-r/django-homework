@@ -1,0 +1,2 @@
+python3  manage.py shell < cmds/clear_db.py
+

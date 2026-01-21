@@ -17,6 +17,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name="Продукт", help_text="Наименование Продукта")
     description = models.CharField(blank=True, null=True, verbose_name="Описание", help_text="Описание Продукта")
@@ -52,6 +53,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
