@@ -3,6 +3,7 @@ from catalog.models import Product
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 
+
 class ProductListView(ListView):
     model = Product
     template_name = "products/product_list.html"
