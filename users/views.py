@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
 from django.views.generic import CreateView
 from users.forms import UserRegisterForm
@@ -35,8 +35,22 @@ class UserLoginView(LoginView):
 
 
 
+class DUserLogoutView(LogoutView):
+    model = User
+    template_name = 'users/logout.html'
+    success_url = reverse_lazy('catalog:product_list')
+    def get_object(self):
+        return self.request.user
+    def form_valid(self, form):
+        user = form.save()
 
 
+class UserLogoutView(LogoutView):
+    success_url = reverse_lazy('catalog:product_list')
+    def dispatch(self, request, *args, **kwargs):
+        if request.method.lower() == 'get':
+            return self.post(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 
