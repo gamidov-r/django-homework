@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.module_loading import module_has_submodule
 
+from users.models import User
+
 # Create your models here.
 
 
@@ -50,11 +52,18 @@ class Product(models.Model):
         help_text="Укажите кол-во просмотров",
         default=0,
     )
+    published = models.BooleanField(default=False, verbose_name="Опубликовано")
+    owner = models.ForeignKey(
+        related_name="products", on_delete=models.CASCADE, null=True, blank=True, verbose_name="moderator", to=User
+    )
 
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "created_at", "updated_at", "value"]
+        permissions = [
+            ("can_cancel_publish", "Can cancel publish"),
+        ]
 
     def __str__(self):
         return self.name

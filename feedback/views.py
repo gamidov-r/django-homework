@@ -3,10 +3,12 @@ from feedback.models import Feedback
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 
+
 ### Feedback
 class FeedbackListView(ListView):
     model = Feedback
     template_name = "feedback/entity_list.html"
+
     def get_queryset(self):
         return Feedback.objects.filter(published=True)
 
@@ -14,19 +16,23 @@ class FeedbackListView(ListView):
 class FeedbackDetailView(DetailView):
     model = Feedback
     template_name = "feedback/entity_detail.html"
+
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         self.object.view_counter += 1
         self.object.save()
         return self.object
 
+
 class FeedbackUpdateView(UpdateView):
     model = Feedback
     fields = ("title", "body", "preview", "created_at", "published", "view_counter")
     success_url = reverse_lazy("feedback:entity_list")
     template_name = "feedback/entity_form.html"
+
     def get_success_url(self):
         return reverse("feedback:entity_detail", args=(self.kwargs.get("pk"),))
+
 
 class FeedbackCreateView(CreateView):
     model = Feedback
@@ -39,6 +45,7 @@ class FeedbackDeleteView(DeleteView):
     model = Feedback
     success_url = reverse_lazy("feedback:entity_list")
     template_name = "feedback/entity_confirm_delete.html"
+
 
 # ### catalog
 #
@@ -95,6 +102,3 @@ class FeedbackDeleteView(DeleteView):
 #     product = get_object_or_404(Product, pk=pk)
 #     context = {"product": product}
 #     return render(request, "products/products_detail.html", context)
-
-
-

@@ -1,7 +1,13 @@
 from django.urls import path
 from feedback.apps import FeedbackConfig
 
-from feedback.views import FeedbackListView, FeedbackDetailView, FeedbackCreateView, FeedbackUpdateView, FeedbackDeleteView
+from feedback.views import (
+    FeedbackListView,
+    FeedbackDetailView,
+    FeedbackCreateView,
+    FeedbackUpdateView,
+    FeedbackDeleteView,
+)
 
 app_name = FeedbackConfig.name
 

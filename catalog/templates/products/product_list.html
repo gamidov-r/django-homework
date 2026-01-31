@@ -18,8 +18,10 @@
                     <div class="btn-group">
                       {% if user.is_authenticated %}
                       <a class="btn btn-primary" href="{% url 'catalog:products_detail' product.pk %}" role="button">Открыть</a>
+                      {% if perms.catalog.can_cancel_publish and perms.catalog.delete_product %}
                       <a class="btn btn-primary" href="{% url 'catalog:products_update' product.pk %}" role="button">Редактировать</a>
                       <a class="btn btn-primary" href="{% url 'catalog:products_delete' product.pk %}" role="button">Удалить</a>
+                      {% endif %}
                       {% else %}
                       <a class="btn btn-primary" href="{% url 'users:register' %}" role="button">Регистрация</a>
                       {% endif %}

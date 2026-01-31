@@ -11,4 +11,3 @@ class FeedbackAdmin(admin.ModelAdmin):
         "title",
         "body",
     )
-

@@ -1,9 +1,11 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, ProductModeratorForm
 from catalog.models import Product
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class ProductListView(ListView):
     model = Product
@@ -31,6 +33,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
+
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
@@ -42,6 +45,15 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
         return self.request.user
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm("catalog.can_cancel_publish"):
+            return ProductModeratorForm
+        raise PermissionDenied
+
 
 class ProductDeleteView(DeleteView):
     model = Product

@@ -6,6 +6,3 @@ class FeedbackConfig(AppConfig):
     name = "feedback"
     verbose_name = "Feedback"
     default_auto_field = "django.db.models.BigAutoField"
-
-
-
