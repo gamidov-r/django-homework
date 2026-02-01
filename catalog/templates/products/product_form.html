@@ -9,6 +9,7 @@
                         {% csrf_token %}
                         {{ form.as_p}}
                     </div>
+                    {% if user.is_authenticated %}
                     <button type="submit" class="btn btn-primary">
                         {% if object %}
                         Сохранить
@@ -16,6 +17,7 @@
                         Создать
                         {% endif %}
                     </button>
+                    {% endif %}
                 </div>
             </form>
         </div>

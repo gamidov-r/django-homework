@@ -25,6 +25,7 @@ class UserCreateView(CreateView):
             from_email=EMAIL_HOST_USER,
             recipient_list=[user.email],
         )
+        user.owner = user
         return super().form_valid(form)
 
 

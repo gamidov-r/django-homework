@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser#, User
 from django.db import models
 from django.db.models import ForeignKey
 from django.conf import settings
@@ -16,7 +16,8 @@ class User(AbstractUser):
     avatar = models.ImageField(
         upload_to="users/avatars/", verbose_name="Аватар", null=True, blank=True, help_text="Фото профиля"
     )
-    owner = ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    # owner = ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey('self', on_delete=models.CASCADE, null=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

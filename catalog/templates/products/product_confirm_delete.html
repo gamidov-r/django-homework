@@ -4,9 +4,11 @@
     <div class="row">
         <div class="col-5">
             <form class="row" method="post" enctype="multipart/form-data">
+                {% if user.is_authenticated %}
                 <div class="card">
+                {% if perms.catalog.can_cancel_publish and perms.catalog.delete_product %}
                   <p class="card-text">
-                    Удалить {{ object.name }} ?
+                      Удалить {{ object.name }} ?
                   </p>
                     <div class="card-body">
                         {% csrf_token %}
@@ -15,6 +17,26 @@
                         Удалить
                     </button>
                   <a class="btn btn-primary" href="{% url 'catalog:product_list' %}" role="button">Не удалять</a>
+                {% else %}
+                  <p class="card-text">
+                      У вас нет прав доступа
+                  </p>
+                    <div class="card-body">
+                        {% csrf_token %}
+                    </div>
+                  <a class="btn btn-primary" href="{% url 'catalog:product_list' %}" role="button">На главную</a>
+                {% endif %}
+                {% else %}
+                <div class="card">
+                  <p class="card-text">
+                      Вы не авторизованы
+                  </p>
+                    <div class="card-body">
+                        {% csrf_token %}
+                    </div>
+                  <a class="btn btn-primary" href="{% url 'users:login' %}" role="button">Войти</a>
+                </div>
+                {% endif %}
                 </div>
             </form>
         </div>
