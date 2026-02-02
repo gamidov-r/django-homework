@@ -63,9 +63,17 @@ class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
     template_name = "products/product_confirm_delete.html"
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        user = self.request.user
+        if user.has_perm("catalog.can_delete_publish"):
+            pass
+
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
+
 
 def home(request):
     return render(request, "products/home.html")
