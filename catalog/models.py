@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.module_loading import module_has_submodule
 
 from users.models import User
 
@@ -15,6 +14,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
+        ordering = ("name",)
 
     def __str__(self):
         return self.name
