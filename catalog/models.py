@@ -1,3 +1,69 @@
 from django.db import models
 
+from users.models import User
+
 # Create your models here.
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Категория", help_text="Категория с продуктами")
+    description = models.CharField(
+        blank=True, null=True, verbose_name="Описание", help_text="Описание категории с продуктами"
+    )
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Продукт", help_text="Наименование Продукта")
+    description = models.CharField(blank=True, null=True, verbose_name="Описание", help_text="Описание Продукта")
+    img = models.ImageField(
+        upload_to="products/images",
+        blank=True,
+        null=True,
+        verbose_name="Изображение",
+        help_text="Изображение продукта",
+    )
+    # category = models.CharField(max_length=100, verbose_name="Продукт", help_text="Наименование Продукта")
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        verbose_name="Категория",
+        help_text="Категория продукта",
+        null=True,
+        blank=True,
+        related_name="products",
+    )
+    value = models.IntegerField()
+    created_at = models.DateField(
+        blank=True, null=True, verbose_name="дата создания", help_text="дата создания продукта"
+    )
+    updated_at = models.DateField(
+        blank=True, null=True, verbose_name="дата изменения", help_text="дата последнего изменения продукта"
+    )
+    view_counter = models.PositiveIntegerField(
+        verbose_name="счетчик просмотров",
+        help_text="Укажите кол-во просмотров",
+        default=0,
+    )
+    published = models.BooleanField(default=False, verbose_name="Опубликовано")
+    owner = models.ForeignKey(
+        related_name="products", on_delete=models.CASCADE, null=True, blank=True, verbose_name="moderator", to=User
+    )
+
+    class Meta:
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
+        ordering = ["name", "created_at", "updated_at", "value"]
+        permissions = [
+            ("can_cancel_publish", "Can cancel publish"),
+        ]
+
+    def __str__(self):
+        return self.name
